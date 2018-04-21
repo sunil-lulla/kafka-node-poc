@@ -1,0 +1,3 @@
+
+Initial Setup 
+	https://nodewebapps.com/2017/11/04/getting-started-with-nodejs-and-kafka/
