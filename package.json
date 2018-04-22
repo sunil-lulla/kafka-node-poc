@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/sunil-lulla/kafka-node-poc#readme",
   "dependencies": {
-    "express": "^4.16.3",
-    "kafka-node": "^2.5.0"
+    "express": "4.16.3",
+    "kafka-node": "2.5.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
