@@ -7,7 +7,7 @@ const client = new kafka.Client("localhost:2181", "my-client-id", {
     retries: 2
 });
 
-let records_to_push = 5;
+let records_to_push = 10;
 
 
 const producer = new kafka.HighLevelProducer(client);

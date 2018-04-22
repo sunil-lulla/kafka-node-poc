@@ -49,33 +49,33 @@ let notification_batch_max_size=8;
 let notification_batch = []; 
 
 consumer.on("message", function(message) {
-    consumer.commit(function(err,data) {
-        console.log(err);
-        console.log(data);
-    });
+    // consumer.commit(function(err,data) {
+    //     //console.log(err);
+    //     console.log(data);
+    // });
+    //console.log(notification_batch.length);
     if(notification_batch.length < notification_batch_max_size){
             notification_batch.push(message);
         }
     else{
-        console.log(notification_batch);
-        console.log(notification_batch.length);
-        console.log("============================");
-        
         function someHeavyActivity(time) {
             // consumer.pause(function(err,data) {});
             // consumer.commit(function(err,data) {
         
             // })
 
-            consumer.pause();
+            //
             var stop = new Date().getTime();
             while(new Date().getTime() < stop + time) {
-                ;
+                consumer.pause();  
+                //console.log("inside loop "+notification_batch.length);
             }
+            console.log(notification_batch);
             notification_batch = [];
-            consumer.relase();
+            consumer.resume();
         }
-        someHeavyActivity(20000);
+        someHeavyActivity(4000);
+        
     }
 
 
