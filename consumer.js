@@ -10,29 +10,28 @@ const topics = [
 const options = {
     autoCommit: false,
     fetchMaxWaitMs: 1000,
-    fetchMaxBytes: 100,
+    fetchMaxBytes: 1024* 1024,
     encoding: "utf-8",
-    //offset:true
-    fromOffset: false,
+    //offset:true,
+    //fromOffset: false,
 };
 
-// console.log("here"); 
+console.log("here"); 
 
-const consumer = new kafka.Consumer(client, topics, options);
+let consumer = new kafka.HighLevelConsumer(client, topics, options);
 
-let notification_batch_max_size=5;
+let notification_batch_max_size=8;
 let notification_batch = []; 
 
-
 consumer.on("message", function(message) {
- 	
-	if(notification_batch.length<notification_batch_max_size){
+ 	console.log(message);
+	if(notification_batch.length < notification_batch_max_size){
  			notification_batch.push(message);
  		}
  	else{
  		
  		function someHeavyActivity(time, callback) {
- 			consumer.close(function(err,data) {});
+ 			consumer.pause(function(err,data) {});
  			consumer.commit(function(err,data) {
  		
  			})
@@ -40,9 +39,11 @@ consumer.on("message", function(message) {
 		    while(new Date().getTime() < stop + time) {
 		        ;
 		    }
+		    console.log(notification_batch);
 		    notification_batch = [];
 		}
 		someHeavyActivity(20000);
+	}
 });
  
 consumer.on("error", function(err) {

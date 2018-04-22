@@ -7,7 +7,7 @@ const client = new kafka.Client("localhost:2181", "my-client-id", {
     retries: 2
 });
 
-let records_to_push = 25;
+let records_to_push = 5;
 
 
 const producer = new kafka.HighLevelProducer(client);
@@ -75,7 +75,8 @@ producer.on("ready", function() {
         for(let i=0;i<records_to_push;i++){
             //Send record to Kafka and log result/error
             producer.send(record, function(err,data) {
-            	console.log(data);
+            	//console.log(err);
+                console.log(data);
             });
         }
 });

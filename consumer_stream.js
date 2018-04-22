@@ -1,41 +1,41 @@
-import kafka from "kafka-node"
- 
-const client = new kafka.Client("localhost:2181");
- 
-const topics = [
-    {
-        topic: "webevents4",
-        highWaterMark:2,
-        offset: 0, //default 0
-        partition: 0 // default 0
-    }
-];
-const options = {
-    autoCommit: true,
-    fetchMaxWaitMs: 1000,
-    fetchMaxBytes: 1024 * 1024,
-    encoding: "utf8",
-    //offset:true
-    fromOffset: true,
-};
+		import kafka from "kafka-node"
+		 
+		const client = new kafka.Client("localhost:2181");
+		 
+		const topics = [
+		    {
+		        topic: "webevents4",
+		        highWaterMark:2,
+		        offset: 0, //default 0
+		        partition: 0 // default 0
+		    }
+		];
+		const options = {
+		    autoCommit: true,
+		    fetchMaxWaitMs: 1000,
+		    fetchMaxBytes: 1024 * 1024,
+		    encoding: "utf8",
+		    //offset:true
+		    fromOffset: true,
+		};
 
-// console.log("here"); 
+		// console.log("here"); 
 
-//const consumer = new kafka.HighLevelConsumer(client, topics, options);
+		//const consumer = new kafka.HighLevelConsumer(client, topics, options);
 
-const consumer = new kafka.ConsumerStream(client, topics, options);
-//consumer.setEncoding('UTF8');
+		const consumer = new kafka.ConsumerStream(client, topics, options);
+		//consumer.setEncoding('UTF8');
 
-let data ="";
-consumer.on('data', function(chunk,encoding) {
-   console.log(encoding);
-   if (chunk !== null && typeof chunk === 'object') {
-    try { chunk = JSON.stringify(chunk) } catch (e) { next(e) }
-  }
-  console.log(chunk.toString());
-   data += chunk;
-   //next(null,chunk)
-});
+		let data ="";
+		consumer.on('data', function(chunk,encoding) {
+		   console.log(encoding);
+		   if (chunk !== null && typeof chunk === 'object') {
+		    try { chunk = JSON.stringify(chunk) } catch (e) { next(e) }
+		  }
+		  console.log(chunk.toString());
+		   data += chunk;
+		   //next(null,chunk)
+		});
 
 // consumer.on("message", function(message) {
 //  	//console.log("here");
