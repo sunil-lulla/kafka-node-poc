@@ -8,33 +8,41 @@ const topics = [
     }
 ];
 const options = {
-    autoCommit: true,
+    autoCommit: false,
     fetchMaxWaitMs: 1000,
-    fetchMaxBytes: 1024 * 1024,
+    fetchMaxBytes: 100,
     encoding: "utf-8",
-    offset:true
+    //offset:true
+    fromOffset: false,
 };
 
 // console.log("here"); 
 
-const consumer = new kafka.HighLevelConsumer(client, topics, options);
- 
+const consumer = new kafka.Consumer(client, topics, options);
+
+let notification_batch_max_size=5;
+let notification_batch = []; 
+
+
 consumer.on("message", function(message) {
- 	console.log("here");
- 	console.log(message);
-    // Read string into a buffer.
-  	var buf = new Buffer(message.value, "binary"); 
-  	var decodedMessage = JSON.parse(buf.toString());
- 	console.log(decodedMessage);
-    //Events is a Sequelize Model Object. 
-    // return Events.create({
-    //     id: decodedMessage.id,
-    //     type: decodedMessage.type,
-    //     userId: decodedMessage.userId,
-    //     sessionId: decodedMessage.sessionId,
-    //     data: JSON.stringify(decodedMessage.data),
-    //     createdAt: new Date()
-    // });
+ 	
+	if(notification_batch.length<notification_batch_max_size){
+ 			notification_batch.push(message);
+ 		}
+ 	else{
+ 		
+ 		function someHeavyActivity(time, callback) {
+ 			consumer.close(function(err,data) {});
+ 			consumer.commit(function(err,data) {
+ 		
+ 			})
+		    var stop = new Date().getTime();
+		    while(new Date().getTime() < stop + time) {
+		        ;
+		    }
+		    notification_batch = [];
+		}
+		someHeavyActivity(20000);
 });
  
 consumer.on("error", function(err) {
